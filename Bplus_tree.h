@@ -2,30 +2,31 @@
 using namespace std;
 
 class Bplus_tree {
+    private:
+    node* root;
 
-private:
-    long long t_key;
-    node *t_pointer, *root;
+    void m_insert(node* cur, int k, int v);
 
-    void m_insert(node* cur, long long k, int va);
+    void m_delete(node* cur, int k, int v);
 
-    Leaf_node* m_find(node* cur, long long k);
+    Leaf_node* m_find(node* cur, int k);
 
-public:
+    int m_find_replaceOfkey(node* cur, int k);
+
+    public:
     Bplus_tree() {
-        t_key = INF;
-        t_pointer = root = nullptr;
+        root = nullptr;
     }
     ~Bplus_tree() {
 
     }
 
-    void Insert(long long k, int va);
+    void Inite();
 
-    void range_find(long long L, long long R);
+    void Insert(int k, int v);
 
-    void Build(int n, pair<long long, int> data[]);
+    void Delete(int k, int v);
 
-    void print(Leaf_node* cur, long long L, long long R);
+    void Find(int k_l, int k_r);
 
 };

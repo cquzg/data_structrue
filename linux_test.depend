@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1608710793 source:d:\linux_project\linux_test\main.cpp
+	<stdio.h>
+	<string.h>
+
+1605357702 d:\linux_project\linux_test\test.h
+
+1608433976 d:\linux_project\linux_test\bplus_tree.h
+	"Bplus_node.h"
+
+1608470404 d:\linux_project\linux_test\bplus_node.h
+	<iostream>
+
+1608469187 source:d:\linux_project\linux_test\bplus_node.cpp
+	"Bplus_node.h"
+
+1608640666 source:d:\linux_project\linux_test\bplus_tree.cpp
+	"Bplus_tree.h"
+
