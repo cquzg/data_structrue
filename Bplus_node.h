@@ -132,33 +132,33 @@ class Internal_node : public node{
             set_pointer(i + 2, get_pointer(i + 1));
         }
         set_key(pos, k);
-        set_pointer(pos + 1, p);
         cnt_increase();
+        set_pointer(pos + 1, p);
+
     }
 
     Internal_node* Split() {
         Internal_node* new_node = new Internal_node();
         int tot = 0, n = Size();
         // 偶数个节点
-        int i = MAX_KEY_NUMBER / 2;
-
-        set_key(i++, -1);   // 应该没问题吧？
-        cnt_decrease();
+        int i = MAX_KEY_NUMBER / 2 + 1;
+        int j = i - 1;
 
         while(i < n) {
             new_node->set_key(tot, get_key(i));
             new_node->set_pointer(tot, get_pointer(i));
             new_node->cnt_increase();
 
-            set_key(i, NON);
-            set_pointer(i, nullptr);
-            cnt_decrease();
-
             i++, tot++;
         }
         new_node->set_pointer(tot, get_pointer(n));
-        set_pointer(n, nullptr);
 
+        while(i >= j) {
+            i--;
+            set_key(i, NON);
+            set_pointer(i + 1, nullptr);
+            cnt_decrease();
+        }
         return new_node;
     }
 
@@ -246,17 +246,20 @@ class Leaf_node: public node {
     ~Leaf_node() {
 
     }
-
+    /*
+    注意删除的顺序：
+        从中间向后删除，则 id > Size() 是错误写法
+        从后向前删
+    */
     void set_value(int id, int x) {
-        if (id < 0 || id >= MAX) {
+        if (id < 0 || id > Size()) {
             Error(__LINE__);
             return;
         }
         value[id] = x;
     }
-
     int get_value(int id) {
-        if (id < 0 || id >= Size()) {
+        if (id < 0 || id > Size()) {
             Error(__LINE__);
             return -1;
         }
@@ -290,21 +293,21 @@ class Leaf_node: public node {
 
         //偶数个节点
         int i = MAX_KEY_NUMBER / 2;
-
-        //set_key(i, NON);
-        //set_value(i++, NON);
-        //cnt_decrease();
+        int j = i;
 
         while(i < n) {
             new_node->set_key(tot, get_key(i));
-            new_node->set_value(tot, get_value(i));
             new_node->cnt_increase();
+            new_node->set_value(tot, get_value(i));
 
+            i++, tot++;
+        }
+
+        while(i >= j) {
+            --i;
             set_key(i, NON);
             set_value(i, NON);
             cnt_decrease();
-
-            i++, tot++;
         }
 
         return new_node;
